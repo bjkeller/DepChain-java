@@ -1,4 +1,4 @@
-package io.ncidenz.depchain;
+package org.pnri.depchain;
 
 import com.beust.jcommander.Parameter;
 

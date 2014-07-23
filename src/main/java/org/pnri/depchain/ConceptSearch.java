@@ -1,4 +1,4 @@
-package io.ncidenz.depchain;
+package org.pnri.depchain;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
