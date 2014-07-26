@@ -1,8 +1,11 @@
 package org.pnri.depchain;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
@@ -47,20 +50,32 @@ public class DepChain {
 				ObservationReader rdr = new ObservationReader();
 				rdr.read(infile, relation);
 			}
+			System.out.println("attributes: "+relation.getSizeAttributes());
+			System.out.println("objects: "+relation.getSizeObjects());
 			
 			Lattice lattice = new HybridLattice(relation);
-
 			InfoSearch searcher = new ConceptSearch(relation,lattice);
+			
+			ConceptVisitor visitor;
+			try (BufferedWriter out = new BufferedWriter(new FileWriter(outFile.toFile()))) {
+				if (dargs.getDotOutput()) {
+					visitor = new DotWriter(out);
+				} else {
+					visitor = new DepTableWriter(out,relation,lattice);
+				}
+				searcher.search(visitor);
+				out.close();
+			} catch (IOException e) {
+				System.out.println("error opening output file "+e.getMessage());
+			}
 
-			searcher.search(outFile);
+			
 		}
 		catch (ParameterException e) {
 			System.out.println(e.getMessage());
 			cmd.usage();
 
-		} catch (IOException e) {
-			System.out.println("error opening output file "+e.getMessage());
-		} 
+		}  
 	}
 
 

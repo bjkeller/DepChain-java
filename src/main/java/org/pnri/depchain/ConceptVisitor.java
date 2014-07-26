@@ -15,4 +15,10 @@ import colibri.lib.Concept;
  */
 public interface ConceptVisitor {
 	void visit(Concept con) throws IOException;
+
+	void visitEdge(Concept next, Concept subConcept) throws IOException;
+
+	void pre() throws IOException;
+
+	void post() throws IOException;
 }

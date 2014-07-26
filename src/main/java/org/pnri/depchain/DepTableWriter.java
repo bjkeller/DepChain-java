@@ -116,4 +116,22 @@ public class DepTableWriter implements ConceptVisitor {
 		return result;
 	}
 
+	@Override
+	public void visitEdge(Concept next, Concept subConcept) {
+		// Does nothing
+		
+	}
+
+	@Override
+	public void pre() throws IOException {
+		// do nothing
+		
+	}
+
+	@Override
+	public void post() throws IOException {
+		// do nothing
+		
+	}
+
 }

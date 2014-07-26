@@ -46,7 +46,8 @@ Nikita has code, I have code, but the punchline is that
 neither of us know when to stop.
 So at the moment, I am dumping all of the concepts along each elaborated chain.
 
-It also does not save the chain, it just dumps concepts as it reaches them.
+By default, it also does not save the chain, it just dumps concepts as it reaches them.
+The dot output will save the chains in dot format, but not give the partial entropies.
 
 ##Building
 This repository is an STS Maven project, and the JCommander dependency should be
@@ -56,12 +57,15 @@ However, the code depends on Colibri-Java, which is a
 Google summer-of-code project developed by Daniel Goetzmann that lives
 [here](https://code.google.com/p/colibri-java/).
 My code uses a couple utility classes in colibri.lib (noted in noted in
-ConceptSearch.java) that do not have public accessibility in the repository.
+ConceptSearch.java) that do not have public accessibility in the repository version.
+
 Unfortunately, I was lazy, and remain that way, and just reached inside and
 changed the access modifiers.
 You should be able to easily import Colibri-Java as a project into STS/Eclipse.
 You'll then have to fix the accessibility issues by hand –
 it is probably easiest to let the compiler/Eclipse find them for you.
+*I have replaced the main culprit to get the Dot output working correctly, but haven't
+checked whether it works with a clean copy of Colibri-Java.*
 
 ##Disclaimer
 

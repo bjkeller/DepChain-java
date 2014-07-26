@@ -1,17 +1,12 @@
 package org.pnri.depchain;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 
 import colibri.lib.Concept;
-import colibri.lib.ConceptComparator;
-import colibri.lib.ConceptOrder;
 import colibri.lib.Lattice;
 import colibri.lib.Relation;
 
@@ -40,25 +35,18 @@ public class ConceptSearch implements InfoSearch {
 	}
 
 	@Override
-	public void search(Path outFile)  {
-		System.out.println("attributes: "+relation.getSizeAttributes());
-		System.out.println("objects: "+relation.getSizeObjects());
-		try (BufferedWriter out = new BufferedWriter(new FileWriter(outFile.toFile()))) {
-			ConceptVisitor visitor = new DepTableWriter(out,relation,lattice);
-			Concept top = lattice.top();
-			Iterator<Concept> coatomIterator = lattice.lowerNeighbors(top);
-			PriorityQueue<Concept> toVisit = new PriorityQueue<Concept>(relation.getSizeAttributes(),new ConceptComparator(ConceptOrder.ATTR_SIZEFIRST));
-			while (coatomIterator.hasNext()) {
-				Concept concept = (Concept) coatomIterator.next();
-				toVisit.add(concept);
-			}
-			searchChains(lattice, toVisit, visitor);
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public void search(ConceptVisitor visitor) throws IOException  {
+		visitor.pre();
+		Concept top = lattice.top();
+		Iterator<Concept> coatomIterator = lattice.lowerNeighbors(top);
+		PriorityQueue<Concept> toVisit = new PriorityQueue<Concept>(relation.getSizeAttributes(),new ConceptDepOrder());
+		while (coatomIterator.hasNext()) {
+			Concept concept = (Concept) coatomIterator.next();
+			toVisit.add(concept);
+			visitor.visitEdge(top, concept);
 		}
-
+		searchChains(lattice, toVisit, visitor);
+		visitor.post();
 	}
 
 	//from each coatom, follow chain formed by max cardinality subconcept(s) (may be ties).
@@ -68,7 +56,7 @@ public class ConceptSearch implements InfoSearch {
 		//TODO  visitedConcepts should forget concepts wont see again 
 		//TODO how to avoid attribute combinations that are low entropy
 
-		Set<Concept> visitedConcepts = new TreeSet<Concept>(new ConceptComparator(ConceptOrder.ATTR_SIZEFIRST));
+		Set<Concept> visitedConcepts = new TreeSet<Concept>(new ConceptDepOrder());
 
 		while (!toVisit.isEmpty()) {
 			Concept next = toVisit.remove();
@@ -82,23 +70,26 @@ public class ConceptSearch implements InfoSearch {
 				Iterator<Concept> subIterator = lattice.lowerNeighbors(next);
 				if (subIterator.hasNext()) {
 
-					Concept maxConcept = subIterator.next();
-					Set<Concept> maxSet = new TreeSet<Concept>(new ConceptComparator(ConceptOrder.ATTR_SIZEFIRST));
+					Set<Concept> maxSet = new TreeSet<Concept>(new ConceptDepOrder());
 
-					maxSet.add(maxConcept);
-					int maxSize = maxConcept.getObjects().size();
+					Concept firstConcept = subIterator.next();
+					int maxSize = firstConcept.getObjects().size();
+					maxSet.add(firstConcept);
+					
 					while(subIterator.hasNext()) {
 						Concept subConcept = subIterator.next();
 						if (subConcept.getObjects().size() >= maxSize) {
 							if (subConcept.getObjects().size() > maxSize) {
 								maxSize = subConcept.getObjects().size();
-								maxSet = new TreeSet<Concept>(new ConceptComparator(ConceptOrder.ATTR_SIZEFIRST));
+								maxSet = new TreeSet<Concept>(new ConceptDepOrder());
 							}
 							maxSet.add(subConcept);
 						}
 					}
+					
 					for (Concept concept : maxSet) {
 						toVisit.add(concept);
+						visitor.visitEdge(next,concept);
 					}
 				}
 			}

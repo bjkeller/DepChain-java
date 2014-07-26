@@ -17,14 +17,18 @@ public class DepArguments {
 	@Parameter(names= { "-i", "--input_file" }, description="input file name", required = true)
 	private String inFile;
 	
+	@Parameter(names = { "-o", "--output_file" }, description="output file name", required = true)
+	private String outFile;
+	
 	@Parameter(names= { "-p", "--pairs" }, description="pair input flag")
 	private boolean readPairs = false;
 
-	@Parameter(names = { "-o", "--output_file" }, description="output file name", required = true)
-	private String outFile;
+	@Parameter(names= { "-d", "--dot" }, description="dot output flag")
+	private boolean dotOutput = false;
 
 	public String getInFile() { return inFile; }
 	public String getOutFile() { return outFile; }
 	public boolean getReadPairs() { return readPairs; }
+	public boolean getDotOutput() { return dotOutput; }
 		
 }

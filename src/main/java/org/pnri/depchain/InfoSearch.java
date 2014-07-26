@@ -1,7 +1,6 @@
 package org.pnri.depchain;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 /**
  * Common interface for (information) dependency chain search classes.
@@ -12,5 +11,5 @@ import java.nio.file.Path;
  * Copyright (c) 2014 Benjamin J. Keller, all rights reserved.
  */
 public interface InfoSearch {
-	public void search(Path outFile) throws IOException;
+	public void search(ConceptVisitor visitor) throws IOException;
 }
