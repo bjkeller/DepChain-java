@@ -35,8 +35,8 @@ public class DepChain {
 			cmd.parse(args);
 			
 			System.out.println("DepChain");
-			System.out.println("\tinput: "+dargs.getInFile());
-			System.out.println("\toutput: "+dargs.getOutFile());
+			System.out.println("\tinput: " + dargs.getInFile());
+			System.out.println("\toutput: "+ dargs.getOutFile());
 			
 			Path infile =  Paths.get(dargs.getInFile());
 			Path outFile = Paths.get(dargs.getOutFile());
@@ -50,19 +50,23 @@ public class DepChain {
 				ObservationReader rdr = new ObservationReader();
 				rdr.read(infile, relation);
 			}
-			System.out.println("attributes: "+relation.getSizeAttributes());
-			System.out.println("objects: "+relation.getSizeObjects());
+			System.out.println("attributes: " + relation.getSizeAttributes());
+			System.out.println("objects: " + relation.getSizeObjects());
 			
 			Lattice lattice = new HybridLattice(relation);
-			InfoSearch searcher = new ConceptSearch(relation,lattice);
+	//		InfoSearch searcher = new ConceptSearch(relation,lattice);
+			
 			
 			ConceptVisitor visitor;
 			try (BufferedWriter out = new BufferedWriter(new FileWriter(outFile.toFile()))) {
 				if (dargs.getDotOutput()) {
 					visitor = new DotWriter(out);
-				} else {
+				} else if (dargs.getRuleOutput()) {
+					visitor = new RuleWriter(out,lattice);
+				} else { //default to tabular output
 					visitor = new DepTableWriter(out,relation,lattice);
 				}
+				InfoSearch searcher = new IntervalSearch(relation,lattice,out);
 				searcher.search(visitor);
 				out.close();
 			} catch (IOException e) {

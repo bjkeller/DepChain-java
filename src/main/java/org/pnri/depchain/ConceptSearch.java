@@ -36,7 +36,7 @@ public class ConceptSearch implements InfoSearch {
 
 	@Override
 	public void search(ConceptVisitor visitor) throws IOException  {
-		visitor.pre();
+		visitor.before();
 		Concept top = lattice.top();
 		Iterator<Concept> coatomIterator = lattice.lowerNeighbors(top);
 		PriorityQueue<Concept> toVisit = new PriorityQueue<Concept>(relation.getSizeAttributes(),new ConceptDepOrder());
@@ -46,7 +46,7 @@ public class ConceptSearch implements InfoSearch {
 			visitor.visitEdge(top, concept);
 		}
 		searchChains(lattice, toVisit, visitor);
-		visitor.post();
+		visitor.after();
 	}
 
 	//from each coatom, follow chain formed by max cardinality subconcept(s) (may be ties).
@@ -76,7 +76,7 @@ public class ConceptSearch implements InfoSearch {
 					int maxSize = firstConcept.getObjects().size();
 					maxSet.add(firstConcept);
 					
-					while(subIterator.hasNext()) {
+					while (subIterator.hasNext()) {
 						Concept subConcept = subIterator.next();
 						if (subConcept.getObjects().size() >= maxSize) {
 							if (subConcept.getObjects().size() > maxSize) {

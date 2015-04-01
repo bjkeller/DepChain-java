@@ -25,10 +25,14 @@ public class DepArguments {
 
 	@Parameter(names= { "-d", "--dot" }, description="dot output flag")
 	private boolean dotOutput = false;
+	
+	@Parameter(names = { "-r", "--rules" }, description="rule output flag")
+	private boolean ruleOutput = false;
 
 	public String getInFile() { return inFile; }
 	public String getOutFile() { return outFile; }
 	public boolean getReadPairs() { return readPairs; }
 	public boolean getDotOutput() { return dotOutput; }
+	public boolean getRuleOutput() { return ruleOutput; }
 		
 }

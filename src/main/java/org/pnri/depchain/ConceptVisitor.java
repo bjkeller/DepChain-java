@@ -18,7 +18,7 @@ public interface ConceptVisitor {
 
 	void visitEdge(Concept next, Concept subConcept) throws IOException;
 
-	void pre() throws IOException;
+	void before() throws IOException;
 
-	void post() throws IOException;
+	void after() throws IOException;
 }

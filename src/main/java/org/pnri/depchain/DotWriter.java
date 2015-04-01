@@ -25,7 +25,7 @@ public class DotWriter implements ConceptVisitor {
 	
 	@Override
 	public void visit(Concept con) throws IOException {
-		//does nothing
+		writeConcept(con);
 	}
 	
 	@Override
@@ -36,9 +36,11 @@ public class DotWriter implements ConceptVisitor {
 		out.write("\n");
 	}
 
+	//TODO restore ability to write card of object set instead of set
 	private void writeConcept(Concept con) throws IOException {
 		out.write("\"");
-		out.write(""+con.getObjects().size());
+		//out.write(""+con.getObjects().size());
+		writeSet(out, con.getObjects());
 		out.write(";");
 		writeSet(out,con.getAttributes());
 		out.write("\"");	
@@ -60,14 +62,19 @@ public class DotWriter implements ConceptVisitor {
 	}
 
 	@Override
-	public void pre() throws IOException {
+	public void before() throws IOException {
 		out.write("digraph lattice {\n");
 		
 	}
 
 	@Override
-	public void post() throws IOException {
+	public void after() throws IOException {
 		out.write("}\n");
+		
+	}
+
+	public void write(String str) throws IOException {
+		out.write(str);
 		
 	}
 

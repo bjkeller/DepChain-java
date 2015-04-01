@@ -41,11 +41,17 @@ public class DepTableWriter implements ConceptVisitor {
 		writeSet(out,con.getAttributes());
 		out.write("\t"+con.getObjects().size());
 	
+		out.write("\t"+violationSize(con));
 		out.write("\t"+entropy(objectProbability(con)));
 		out.write("\t"+entropy(attributeProbability(con)));
 		out.write("\t"+entropy(objectJaccard(con)));
 		out.write("\t"+entropy(attributeJaccard(con)));
 		out.write("\n");
+	}
+
+	private long violationSize(Concept con) {
+		// TODO Auto-generated method stub
+		return -1;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -123,13 +129,13 @@ public class DepTableWriter implements ConceptVisitor {
 	}
 
 	@Override
-	public void pre() throws IOException {
+	public void before() throws IOException {
 		// do nothing
 		
 	}
 
 	@Override
-	public void post() throws IOException {
+	public void after() throws IOException {
 		// do nothing
 		
 	}
