@@ -6,7 +6,7 @@ Based on paper "Formal concept analysis of disease similarity"
 [[PMC3392047](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3392047/)], however,
 chains are constructed from co-atoms to atoms and no bound is used.
 
-##What it does
+## What it does
 
 This code was originally developed to explore dependencies in artificial data
 given as observation tables for experiments with PNDRI.
@@ -31,7 +31,7 @@ partial object entropy (from Jaccard coefficient),
 partial attribute entropy (from global frequency), and
 partial attribute entropy (from Jaccard coefficient).
 
-##What it doesn't do
+## What it doesn't do
 
 FCA mechanisms from Colibri-Java are used, and there is no reduction of the
   incidence relation.
@@ -49,14 +49,14 @@ So at the moment, I am dumping all of the concepts along each elaborated chain.
 By default, it also does not save the chain, it just dumps concepts as it reaches them.
 The dot output will save the chains in dot format, but not give the partial entropies.
 
-##Building
+## Building
 This repository is an STS Maven project, and the JCommander dependency should be
 handled by Maven if you clone the repository and build.
 
 However, the code depends on Colibri-Java, which is a
 Google summer-of-code project developed by Daniel Goetzmann that lives
 [here](https://code.google.com/p/colibri-java/).
-My code uses a couple utility classes in colibri.lib (noted in noted in
+My code uses a couple utility classes in colibri.lib (noted in
 ConceptSearch.java) that do not have public accessibility in the repository version.
 
 Unfortunately, I was lazy, and remain that way, and just reached inside and
@@ -67,7 +67,7 @@ it is probably easiest to let the compiler/Eclipse find them for you.
 *I have replaced the main culprit to get the Dot output working correctly, but haven't
 checked whether it works with a clean copy of Colibri-Java.*
 
-##Disclaimer
+## Disclaimer
 
 This is a research tool under construction, and orphanhood is inevitable.
 
